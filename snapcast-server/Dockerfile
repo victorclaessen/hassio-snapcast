@@ -2,7 +2,11 @@
 ARG BUILD_FROM=ghcr.io/hassio-addons/base:18.1.0
 FROM $BUILD_FROM
 
+# librespot: release from crates.io (LIBRESPOT_VERSION), or a git commit when
+# LIBRESPOT_GIT_REV is set. See UPGRADING.md in the repository root.
 ARG LIBRESPOT_VERSION=0.8.0
+# librespot dev + PR #1861 (dealer reconnect / session loss recovery), 2026-11-05
+ARG LIBRESPOT_GIT_REV=3372e6216b23603ccbe38039817512f187f7cce3
 ARG GM_RENDER_RESURRECT_VERSION=v0.3
 
 # Add Runtime Dependencies
@@ -41,14 +45,19 @@ RUN apk add --no-cache --virtual .build-dependencies \
         # rust-bindgen \
         # clang18-dev
 
-RUN cargo install \
+RUN if [ -n "${LIBRESPOT_GIT_REV}" ]; then \
+            LIBRESPOT_SOURCE="--git https://github.com/librespot-org/librespot --rev ${LIBRESPOT_GIT_REV}"; \
+        else \
+            LIBRESPOT_SOURCE="--version ${LIBRESPOT_VERSION}"; \
+        fi \
+        && echo "Building librespot from: ${LIBRESPOT_SOURCE}" \
+        && cargo install \
         --locked \
         --no-default-features \
         --features with-avahi,rustls-tls-native-roots \
         --root /usr \
         --bin librespot \
-        --version ${LIBRESPOT_VERSION} \
-        # --verbose \
+        ${LIBRESPOT_SOURCE} \
         librespot
 
 # Add Compiling Dependencies

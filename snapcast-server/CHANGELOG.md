@@ -1,4 +1,15 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
+## 0.4.8
+
+- update: build librespot from git: dev + PR #1861 (3372e62), fixes the spirc restart loop on dealer websocket drops
+- update: librespot source selectable via LIBRESPOT_VERSION / LIBRESPOT_GIT_REV in the Dockerfile
+- chore: drop `image:` from config.yaml so Home Assistant builds the add-on locally from the Dockerfile
+- docs: UPGRADING.md
+
+## 0.4.5
+
+- update: librespot 0.8.0, snapweb 0.9.2
+
 ## 0.4.4
 
 - update: bump ghcr.io/hassio-addons/base to v18.1.0
