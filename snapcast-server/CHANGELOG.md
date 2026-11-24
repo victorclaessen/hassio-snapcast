@@ -1,4 +1,8 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
+## 0.4.10
+
+- fix: let cargo fetch the librespot git source with the git CLI (CARGO_NET_GIT_FETCH_WITH_CLI, git as build dependency)
+
 ## 0.4.9
 
 - fix: unpin musl/musl-utils and upgrade base packages before installing build dependencies (base image 18.1.0 pins musl 1.2.5-r10, Alpine 3.22 musl-dev needs r13)

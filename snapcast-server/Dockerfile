@@ -45,12 +45,16 @@ RUN apk add --no-cache \
 RUN apk add --no-cache --virtual .build-dependencies \
         # cargo dependencies
         cargo \
+        git \
         # cmake \
         avahi-dev
         # make \
         # rust-bindgen \
         # clang18-dev
 
+# Alpine's cargo cannot clone git dependencies with its built-in git library
+# ("failed to clone into ... No such file or directory"): use the git CLI.
+ENV CARGO_NET_GIT_FETCH_WITH_CLI=true
 RUN if [ -n "${LIBRESPOT_GIT_REV}" ]; then \
             LIBRESPOT_SOURCE="--git https://github.com/librespot-org/librespot --rev ${LIBRESPOT_GIT_REV}"; \
         else \
