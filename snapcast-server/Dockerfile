@@ -9,6 +9,12 @@ ARG LIBRESPOT_VERSION=0.8.0
 ARG LIBRESPOT_GIT_REV=3372e6216b23603ccbe38039817512f187f7cce3
 ARG GM_RENDER_RESURRECT_VERSION=v0.3
 
+# The base image pins musl (and musl-utils) in /etc/apk/world; once the Alpine
+# repo moves on, musl-dev for cargo can no longer be installed ("musl breaks
+# musl-dev"). Unpin and upgrade the base packages first.
+RUN apk add --no-cache --upgrade musl musl-utils \
+        && apk upgrade --no-cache
+
 # Add Runtime Dependencies
 RUN apk add --no-cache \
         dbus \

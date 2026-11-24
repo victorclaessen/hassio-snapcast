@@ -20,5 +20,10 @@ Home Assistant builds this add-on locally from `snapcast-server/Dockerfile`
 5. Check: `docker exec app_978cbd8a_snapcast-server librespot --version`
    and the add-on log (no reconnect loop every few seconds).
 
+If the build fails with an unknown error, `ha supervisor logs` only shows the
+tail. Reproduce a failing `apk` step in a throwaway container instead (the
+base image uses s6 as init, so bypass it):
+`docker run --rm --entrypoint /bin/sh ghcr.io/hassio-addons/base:<tag> -c 'apk add --no-cache cargo avahi-dev'`
+
 Going back to a release once the fix is in one: set `LIBRESPOT_VERSION` to it,
 empty `LIBRESPOT_GIT_REV`, and bump the version again.

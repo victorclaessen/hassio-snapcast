@@ -1,4 +1,8 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
+## 0.4.9
+
+- fix: unpin musl/musl-utils and upgrade base packages before installing build dependencies (base image 18.1.0 pins musl 1.2.5-r10, Alpine 3.22 musl-dev needs r13)
+
 ## 0.4.8
 
 - update: build librespot from git: dev + PR #1861 (3372e62), fixes the spirc restart loop on dealer websocket drops
