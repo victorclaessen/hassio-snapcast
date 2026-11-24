@@ -1,4 +1,8 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
+## 0.4.11
+
+- fix: install snapweb~0.9.2 instead of the exact 0.9.2-r0 (edge/testing now has 0.9.2-r1)
+
 ## 0.4.10
 
 - fix: let cargo fetch the librespot git source with the git CLI (CARGO_NET_GIT_FETCH_WITH_CLI, git as build dependency)
