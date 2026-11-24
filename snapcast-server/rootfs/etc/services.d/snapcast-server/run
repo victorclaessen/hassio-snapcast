@@ -20,18 +20,17 @@ fi
 
 bashio::log.debug "Config: $(bashio::addon.config)"
 
-echo "[stream]" > "${config}"
-for stream in $(bashio::config 'streams.streams'); do
-    echo "source = ${stream}" >> "${config}"
-done
-
-sampleformat=$(bashio::config 'sampleformat')
-# Add DLNA Media Renderer source
+# Keep snapserver state (groups, client names, volumes, which stream each
+# group plays) in /data, so it survives add-on and Home Assistant restarts.
+mkdir -p /data/snapserver
 {
-    echo "source = pipe:///share/snapfifo?&name=DLNA&disable_audio_cache=true&sampleformat=${sampleformat}"
-} >> "${config}"
+    echo "[server]"
+    echo "datadir = /data/snapserver"
+    echo "[stream]"
+} > "${config}"
 
-# Add the Spotify source
+# Add the Spotify source first: snapserver puts new clients/groups on the
+# first stream, so Spotify is the default.
 device_name=$(bashio::config 'spotify_name')
 spotify_auth=""
 if bashio::config.has_value 'spotify_token'; then
@@ -39,9 +38,22 @@ if bashio::config.has_value 'spotify_token'; then
     token=$(bashio::config 'spotify_token')
     spotify_auth="&access_token=${token}"
 fi
-
 {
     echo "source = librespot:///usr/bin/librespot?name=Spotify&devicename="${device_name}"${spotify_auth}&disable_audio_cache=true&cache=/data/spot"
+} >> "${config}"
+
+# Add DLNA Media Renderer source
+sampleformat=$(bashio::config 'sampleformat')
+{
+    echo "source = pipe:///share/snapfifo?&name=DLNA&disable_audio_cache=true&sampleformat=${sampleformat}"
+} >> "${config}"
+
+# Add user-defined streams
+for stream in $(bashio::config 'streams.streams'); do
+    echo "source = ${stream}" >> "${config}"
+done
+
+{
     echo "buffer = $(bashio::config 'buffer')"
     echo "codec = $(bashio::config 'codec')"
     echo "send_to_muted = $(bashio::config 'send_to_muted')"

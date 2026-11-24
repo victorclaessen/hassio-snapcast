@@ -1,4 +1,9 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
+## 0.4.12
+
+- feat: keep snapserver state (groups, client names, volumes, stream per group) in /data/snapserver so it survives restarts
+- change: Spotify is now the first (default) stream, before DLNA and user-defined streams; new clients start on Spotify
+
 ## 0.4.11
 
 - fix: install snapweb~0.9.2 instead of the exact 0.9.2-r0 (edge/testing now has 0.9.2-r1)
