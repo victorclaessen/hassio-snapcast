@@ -38,8 +38,10 @@ if bashio::config.has_value 'spotify_token'; then
     token=$(bashio::config 'spotify_token')
     spotify_auth="&access_token=${token}"
 fi
+# volume= (empty): snapserver then omits --initial-volume (default 100), so
+# librespot restores the last Spotify volume from its cache in /data/spot.
 {
-    echo "source = librespot:///usr/bin/librespot?name=Spotify&devicename="${device_name}"${spotify_auth}&disable_audio_cache=true&cache=/data/spot"
+    echo "source = librespot:///usr/bin/librespot?name=Spotify&devicename="${device_name}"${spotify_auth}&disable_audio_cache=true&cache=/data/spot&volume="
 } >> "${config}"
 
 # Add DLNA Media Renderer source

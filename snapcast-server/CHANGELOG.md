@@ -1,4 +1,8 @@
 <!-- https://developers.home-assistant.io/docs/add-ons/presentation#keeping-a-changelog -->
+## 0.4.13
+
+- fix: remember the Spotify volume across restarts (empty `volume=` so snapserver does not pass --initial-volume 100; librespot restores it from /data/spot)
+
 ## 0.4.12
 
 - feat: keep snapserver state (groups, client names, volumes, stream per group) in /data/snapserver so it survives restarts
